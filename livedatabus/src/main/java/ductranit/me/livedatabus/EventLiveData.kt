@@ -20,9 +20,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
 /**
- * A custom LiveData which can unregister when there is no observer
- */
-class EventLiveData( private val mSubject: String) : LiveData<ConsumableEvent>() {
+* 自定义的LiveData，当没有观察者时会自动取消注册
+*/
+class EventLiveData(private val mSubject: String) : LiveData<ConsumableEvent>() {
 
     fun update(obj: ConsumableEvent) {
         postValue(obj)

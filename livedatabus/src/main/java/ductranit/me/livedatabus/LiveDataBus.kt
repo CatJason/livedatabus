@@ -1,18 +1,16 @@
-/*
- * Copyright (C) 2018 ductranit
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/**
+* 版权所有 (C) 2018 ductranit
+*
+* 根据Apache许可证2.0版（"许可证"）授权；
+* 除非符合许可证要求，否则不得使用此文件。
+* 您可以在以下位置获取许可证副本：
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+* 除非适用法律要求或书面同意，本软件按"原样"分发，
+* 没有任何明示或暗示的担保或条件。
+* 详见许可证中特定语言规定的权限和限制。
+*/
 
 package ductranit.me.livedatabus
 
@@ -21,15 +19,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 
 /**
- * Singleton object to manage bus events.
- */
+* 用于管理总线事件的单例对象。
+*/
 object LiveDataBus {
 
     private val subjectMap = HashMap<String, EventLiveData>()
 
     /**
-     * Get the live data or create it if it's not already in memory.
-     */
+    * 获取LiveData，如果内存中不存在则创建新实例。
+    */
     @NonNull
     private fun getLiveData(subjectCode: String): EventLiveData {
         var liveData: EventLiveData? = subjectMap[subjectCode]
@@ -42,11 +40,11 @@ object LiveDataBus {
     }
 
     /**
-     * Subscribe to the specified subject and listen for updates on that subject.
-     */
+    * 订阅指定主题并监听该主题的更新。
+    */
     fun subscribe(subject: String, @NonNull lifecycle: LifecycleOwner, @NonNull action: Observer<ConsumableEvent>) {
         try {
-            // avoid register same instance
+            // 避免重复注册相同实例
             getLiveData(subject).observe(lifecycle, action)
         } catch (throwable: IllegalArgumentException) {
             throwable.printStackTrace()
@@ -54,15 +52,15 @@ object LiveDataBus {
     }
 
     /**
-     * Removes this subject when it has no observers.
-     */
+    * 当主题没有观察者时移除该主题。
+    */
     fun unregister(subject: String) {
         subjectMap.remove(subject)
     }
 
     /**
-     * Publish an object to the specified subject for all subscribers of that subject.
-     */
+    * 向指定主题发布对象，供该主题的所有订阅者接收。
+    */
     fun publish(subject: String, message: ConsumableEvent = ConsumableEvent()) {
         getLiveData(subject).update(message)
     }
